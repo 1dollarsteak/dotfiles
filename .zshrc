@@ -18,14 +18,13 @@ zle -N down-line-or-beginning-search
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=10000
+HISTSIZE=10000
+SAVEHIST=20000
 setopt autocd notify
 unsetopt beep
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
-export PATH="$HOME/Documents/Prolog/sicstus4.0.8/bin:$HOME/gems/bin:$HOME/.gem/ruby/2.6.0/bin:/opt/local/bin:/opt/local/sbin:/usr/local/mysql/bin:$PATH"
 export PROMPT="%F{grey}%B(%?)%b%f %F{white}[%~]:%#%f %F{grey}%B%D{%R|%d.%m.%y|%W}%f%b"$'\n'"> "
 export RPROMPT=""
 #export SHELL="/usr/local/bin/zsh"
@@ -34,9 +33,8 @@ setopt COMPLETE_ALIASES
 
 alias grep="grep --color=auto"
 alias ls="ls -G --color=auto"
-alias poweroff="doas halt -p"
-alias ch="sudo /home/fabian/scripts/connect.sh"
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# alias poweroff="doas halt -p"
+alias ..="cd .."
 
 export HISTCONTROL=ignoredups:erasedups
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
@@ -45,7 +43,11 @@ export PAGER="less"
 peek() { tmux split-window -p 33 "$EDITOR" "$@" }
 
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
+    if [ $(tmux ls | cut -d ":" -f 1 | grep haupt) ]; then
+        exec tmux a -t haupt
+    else
+        exec tmux
+    fi
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -65,6 +67,3 @@ r() {
   fi
 	return $?
 }
-
-# GEM
-export GEM_HOME="$HOME/gems"
